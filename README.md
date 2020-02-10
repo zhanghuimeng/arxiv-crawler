@@ -2,15 +2,22 @@
 
 Crawls a set of information from an [arXiv.org](arxiv.org) article.
 
-Installation:
+* [x] Basic Information
+* [ ] Abstract Translation
+* [ ] Articles Download
+
+## Installation
 
 ```cmd
 pip3 install beautifulsoup4
 pip3 install request
 ```
 
-Usage:
+## Usage
 
 ```cmd
-python crawler.py --link [link] --file [file of links]
+python crawler.py --link [link]
+python crawler.py --file [file of links]
+python crawler.py --file [file of links] --download 
 ```
+
