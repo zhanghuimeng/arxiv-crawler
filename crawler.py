@@ -36,7 +36,8 @@ if args.link:
 if args.file:
     with open(args.file) as f:
         for line in f:
-            links.append(line.strip())
+            if line.strip() != "":
+                links.append(line.strip())
 
 with open(args.output, "w", encoding="utf-8") as f:
     for link in links:
