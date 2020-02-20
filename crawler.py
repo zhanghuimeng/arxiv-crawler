@@ -41,7 +41,7 @@ if args.file:
 
 with open(args.output, "w", encoding="utf-8") as f:
     for link in links:
-        html = urlopen(link).read().decode("utf-8")
+        html = urlopen(link).read().decode("utf-8", "ignore")
         soup = BeautifulSoup(html, features="lxml")
 
         title = soup.find("h1", {"class": "title mathjax"}).get_text()
