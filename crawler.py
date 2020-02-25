@@ -2,9 +2,11 @@ import argparse
 import requests
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+from urllib.parse import quote
 import yaml
 import hashlib
 import random
+import json
 
 template = u"""
 # %s
@@ -34,14 +36,17 @@ def get_ch_abstract(key, abstract):
     key = key["KEY"]
 
     str1 = appid + q + salt + key
-    sign = hashlib.new("md5", str1).hexdigest()
-    print(sign)
+    sign = hashlib.new("md5", str1.encode("utf-8")).hexdigest()
+    # print(sign)
 
+    q = quote(q)
     url = url_template % (q, appid, salt, sign)
-    print(url)
+    # print(url)
     res_data = urlopen(url)
     res = res_data.read()
-    print(res)
+    ch_abstract = json.loads(res)["trans_result"][0]["dst"]
+    # print(ch_abstract)
+    return ch_abstract
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--link", type=str, help="A link")
@@ -103,8 +108,7 @@ with open(args.output, "w", encoding="utf-8") as f:
         abstract = abstract.replace("\n", " ")
         # print("Abstract: %s" % abstract)
 
-        get_ch_abstract(key, abstract)
-        ch_abstract = ""
+        ch_abstract = get_ch_abstract(key, abstract)
         
         f.write(template % (title, link, link, authors, comments, subjects, abstract, ch_abstract))
         print()

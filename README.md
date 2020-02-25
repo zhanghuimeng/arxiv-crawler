@@ -3,7 +3,7 @@
 Crawls a set of information from an [arXiv.org](arxiv.org) article.
 
 * [x] Basic Information
-* [ ] Abstract Translation
+* [x] Abstract Translation
 * [x] Articles Download
 
 ## Installation
