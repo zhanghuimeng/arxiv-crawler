@@ -2,6 +2,9 @@ import argparse
 import requests
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+import yaml
+import hashlib
+import random
 
 template = u"""
 # %s
@@ -23,12 +26,33 @@ template = u"""
 摘要：%s
 """
 
+def get_ch_abstract(key, abstract):
+    url_template = "http://api.fanyi.baidu.com/api/trans/vip/translate?q=%s&from=en&to=zh&appid=%s&salt=%s&sign=%s"
+    q = abstract
+    appid = key["APP_ID"]
+    salt = ''.join(str(random.choice(range(10))) for _ in range(10))
+    key = key["KEY"]
+
+    str1 = appid + q + salt + key
+    sign = hashlib.new("md5", str1).hexdigest()
+    print(sign)
+
+    url = url_template % (q, appid, salt, sign)
+    print(url)
+    res_data = urlopen(url)
+    res = res_data.read()
+    print(res)
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--link", type=str, help="A link")
 parser.add_argument("--file", type=str, help="A file of links", default="links.dat")
 parser.add_argument("--download", action="store_true")
 parser.add_argument("--output", type=str, help="Output of crawlers", default="output.md")
 args = parser.parse_args()
+
+with open("key.yaml") as f:
+    key = yaml.load(f, Loader=yaml.FullLoader)
+    print(key)
 
 links = []
 if args.link:
@@ -79,6 +103,7 @@ with open(args.output, "w", encoding="utf-8") as f:
         abstract = abstract.replace("\n", " ")
         # print("Abstract: %s" % abstract)
 
+        get_ch_abstract(key, abstract)
         ch_abstract = ""
         
         f.write(template % (title, link, link, authors, comments, subjects, abstract, ch_abstract))

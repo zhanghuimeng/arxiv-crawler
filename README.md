@@ -4,13 +4,21 @@ Crawls a set of information from an [arXiv.org](arxiv.org) article.
 
 * [x] Basic Information
 * [ ] Abstract Translation
-* [ ] Articles Download
+* [x] Articles Download
 
 ## Installation
 
 ```cmd
 pip3 install beautifulsoup4
 pip3 install request
+pip3 install pyyaml
+```
+
+Put your baidu translation API key in `key.yaml`:
+
+```yml
+APP_ID: "my app id"
+KEY: "my key"
 ```
 
 ## Usage
@@ -18,6 +26,5 @@ pip3 install request
 ```cmd
 python crawler.py --link [link]
 python crawler.py --file [file of links]
-python crawler.py --file [file of links] --download 
+python crawler.py --file [file of links] --download
 ```
-
