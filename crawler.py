@@ -21,8 +21,6 @@ template = u"""
 
 主题：%s
 
-要点：
-
 英文摘要：%s
 
 摘要：%s
@@ -70,7 +68,7 @@ if args.file:
 
 with open(args.output, "w", encoding="utf-8") as f:
     for link in links:
-        html = urlopen(link).read().decode("utf-8", "ignore")
+        html = urlopen(link, timeout=5).read().decode("utf-8", "ignore")
         soup = BeautifulSoup(html, features="lxml")
 
         title = soup.find("h1", {"class": "title mathjax"}).get_text()
